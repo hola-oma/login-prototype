@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
+import routes from "./routes.js";
+import Header from "./Header";
 import './App.css';
 
+import * as firebase from 'firebase/app';
+import firebaseConfig from './firebase.config';
+
+firebase.initializeApp(firebaseConfig);
+
+interface IAuthContext {
+  isLoggedIn: boolean;
+  setLoggedIn: any;
+}
+
+export const AuthContext = React.createContext<IAuthContext | null>(null);
+
 function App() {
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+
   return (
+    /* https://reactjs.org/docs/context.html */
+    <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, setLoggedIn }}>
+
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Header />
+        Is logged in? {JSON.stringify(isLoggedIn)}
+        <Switch>
+          {routes.map(route => (
+            <Route
+              key={route.path}
+              path={route.path}
+              exact={route.exact}
+              component={route.main}
+            />
+          ))}
+        </Switch>
+      </Router>
     </div>
+    </AuthContext.Provider>
   );
 }
 
+const rootElement = document.getElementById("root");
 export default App;
