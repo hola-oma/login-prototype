@@ -22,6 +22,24 @@ const Login: React.FC = () => {
     //Auth?.setLoggedIn(true);
   };
 
+  const handleGoogleLogin = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    firebase.auth()
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(() => {
+              firebase.auth()
+                      .signInWithPopup(provider)
+                      .then(result => {
+                        console.log(result)
+                        //history.push('/reports')
+                        console.log("going to a page that requires auth")
+                        Auth?.setLoggedIn(true)
+                      })
+                      .catch(e => setErrors(e.message))
+                    })
+  }
+
   return (
     <div>
       <h1>Login</h1>
@@ -41,7 +59,7 @@ const Login: React.FC = () => {
           placeholder="password"
         />
         <hr />
-        <button className="googleBtn" type="button">
+        <button className="googleBtn" type="button" onClick={ () => handleGoogleLogin() }>
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
             alt="logo"

@@ -50,7 +50,7 @@ const Join: React.FC = () => {
           Join With Google
         </button>
 
-        <button type="submit">Login</button>
+        <button type="submit">Sign up</button>
 
         <span>{error}</span>
       </form>
