@@ -9,27 +9,16 @@ input {
   margin:10px;
 }
 
-.headerBar {
-  background-color:gray;
-  display: flex;
-  text-decoration: none;
-  list-style-type: none;
-  justify-content: flex-start;
-  padding: 20px;
-  color:white;
-  height:100px;
+.error {
+  color:red;
 }
 
-.nav {
-  color:white;
+.pullLeft {
+  float:left;
 }
 
-.nav a {
-  color: white;
-}
-
-.nav li {
-  margin: 0 10px;
+.pullRight {
+  float:right;
 }
 
 .googleBtn {

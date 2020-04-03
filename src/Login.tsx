@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "./App";
-import firebase from 'firebase';
-import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object 
+import firebase from 'firebase/app';
+import 'firebase/auth'; // for authentication
+
+import { RouteComponentProps, Link } from 'react-router-dom'; // give us 'history' object 
 
 interface ILogin extends RouteComponentProps<any> {
   // this was different from the tutorial, got typescript help from: 
@@ -53,7 +55,9 @@ const Login: React.FC<ILogin> = ({ history }) => {
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Welcome!</h1>
+      <p>Please log in to send a message to your loved one.</p>
+
       <form onSubmit={e => handleForm(e)}>
         <input
           value={email}
@@ -69,16 +73,23 @@ const Login: React.FC<ILogin> = ({ history }) => {
           type="password"
           placeholder="password"
         />
+        <br />
+        <button type="submit">Log in</button>
+        <br />
+        <Link to="/join">Register</Link>
+
         <hr />
+        <h2>Other sign-in methods</h2>
         <button className="googleBtn" type="button" onClick={ () => handleGoogleLogin() }>
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
             alt="logo"
           />
-          Login With Google
+          Log in With Google
         </button>
-        <button type="submit">Login</button>
-        <span>{error}</span>
+
+
+        <span className="error">{error}</span>
       </form>
     </div>
   );

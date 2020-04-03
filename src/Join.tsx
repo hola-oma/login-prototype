@@ -1,6 +1,8 @@
-import React, { useState, useContext, ReactPropTypes } from "react";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "./App";
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth'; // for authentication
+
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
 interface IJoin extends RouteComponentProps<any> {
@@ -36,7 +38,7 @@ const Join: React.FC<IJoin> = ({ history }) => {
   };
 
   /* JOIN USING GOOGLE ACCOUNT */
-  const handleGoogleLogin = () => {
+  const handleGoogleJoin = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
 
     firebase.auth()
@@ -56,7 +58,8 @@ const Join: React.FC<IJoin> = ({ history }) => {
 
   return (
     <div>
-      <h1>Join</h1>
+      <h1>Create an account</h1>
+      <p>Enter your email address and a password.</p>
       <form onSubmit={e => handleForm(e)}>
         <input
           value={email}
@@ -72,8 +75,14 @@ const Join: React.FC<IJoin> = ({ history }) => {
           type="password"
           placeholder="password"
         />
+        
+        <br />
+        <button type="submit">Sign up</button>
+
         <hr />
-        <button className="googleBtn" type="button">
+        <h2>Other sign-up methods</h2>
+        {/* Google sign in */}
+        <button onClick={() => handleGoogleJoin()} className="googleBtn" type="button">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
             alt="logo"
@@ -81,9 +90,7 @@ const Join: React.FC<IJoin> = ({ history }) => {
           Join With Google
         </button>
 
-        <button type="submit">Sign up</button>
-
-        <span>{error}</span>
+        <span className="error">{error}</span>
       </form>
     </div>
   );

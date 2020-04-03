@@ -6,7 +6,7 @@ import Routes from 'Routes';
 
 import './App.css';
 
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 import firebaseConfig from './firebase.config';
 
 

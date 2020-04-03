@@ -1,4 +1,4 @@
-import React, { Component, ComponentType } from 'react';
+import React from 'react';
 import {Route, Redirect, withRouter, RouteComponentProps} from 'react-router-dom';
 
 /* Adapted from example here: https://github.com/indreklasn/react-fire-auth-example/blob/chapter-2/src/ProtectedRouteHoc.js
