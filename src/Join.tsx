@@ -1,25 +1,58 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, ReactPropTypes } from "react";
 import { AuthContext } from "./App";
 import firebase from 'firebase';
+import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-const Join: React.FC = () => {
+interface IJoin extends RouteComponentProps<any> {
+  // empty for now 
+  // got help here: https://stackoverflow.com/questions/49342390/typescript-how-to-add-type-check-for-history-object-in-react 
+}
+
+const Join: React.FC<IJoin> = ({ history }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
 
   const Auth = useContext(AuthContext);
+
+  /* EMAIL/PASS ACCOUNT CREATION */
   const handleForm = (e: any) => {
     e.preventDefault();
     firebase.auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(res => {
-              if (res.user) Auth?.setLoggedIn(true);
-            })
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(() => {
+              firebase.auth()
+              .createUserWithEmailAndPassword(email, password)
+              .then(res => {
+                console.log(res)
+                if (history) history.push('/posts')
+                if (res.user) Auth?.setLoggedIn(true);
+              })
             .catch(e => {
               setErrors(e.message);
             });
-    };
+          })
+  };
+
+  /* JOIN USING GOOGLE ACCOUNT */
+  const handleGoogleLogin = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    firebase.auth()
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(() => {
+              firebase
+              .auth()
+              .signInWithPopup(provider)
+              .then(result => {
+                console.log(result)
+                if (history) history.push('/reports')
+                Auth?.setLoggedIn(true)
+              })
+              .catch(e => setErrors(e.message))
+            })
+  }
 
   return (
     <div>

@@ -1,5 +1,5 @@
 import React from "react";
-import routes from "./routes";
+import routes from "./Routes";
 import { Link } from "react-router-dom";
 
 interface IHeader {
@@ -12,11 +12,8 @@ const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
       <h1>Login Prototype</h1>
       <p>Is logged in? {JSON.stringify(isLoggedIn)}</p>
       <ul className="nav">
-        {routes.map((route, i) => (
-          <li key={i}>
-            <Link to={route.path}>{route.name}</Link>
-          </li>
-        ))}
+        <li><Link to="/join">Join</Link></li>
+        <li><Link to="/login">Login</Link></li>
         {isLoggedIn && <li><Link to="/posts">Posts</Link></li>}
       </ul>
     </div>

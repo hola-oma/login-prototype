@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
-import routes from './routes';
-import protectedRoutes from './protectedRoutes';
-import ProtectedRouteHoc from './ProtectedRouteHoc';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import Header from './Header';
+import Routes from 'Routes';
+
 import './App.css';
 
 import * as firebase from 'firebase/app';
 import firebaseConfig from './firebase.config';
+
 
 firebase.initializeApp(firebaseConfig);
 
@@ -37,6 +38,9 @@ function App() {
       <Router>
         <Header isLoggedIn={isLoggedIn} />
 
+        <Routes isLoggedIn={isLoggedIn} />
+
+    {/* 
         <Switch>
           {protectedRoutes.map(route => (
             <ProtectedRouteHoc
@@ -56,7 +60,7 @@ function App() {
               component={route.main}
             />
           ))}
-        </Switch>
+          </Switch>  */}
       </Router>
     </div>
     </AuthContext.Provider>

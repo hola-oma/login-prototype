@@ -1,27 +1,39 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "./App";
 import firebase from 'firebase';
+import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object 
 
-const Login: React.FC = () => {
+interface ILogin extends RouteComponentProps<any> {
+  // this was different from the tutorial, got typescript help from: 
+  // https://stackoverflow.com/questions/49342390/typescript-how-to-add-type-check-for-history-object-in-react
+}
+
+const Login: React.FC<ILogin> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
 
   const Auth = useContext(AuthContext);
+
+    /* EMAIL/PASS LOGIN, must exist in database */
   const handleForm = (e: any) => {
     e.preventDefault();
     firebase.auth()
-            .signInWithEmailAndPassword(email, password)
-            .then(res => {
-              if (res.user) Auth?.setLoggedIn(true);
+            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(() => {
+              firebase.auth()
+              .signInWithEmailAndPassword(email, password)
+              .then(res => {
+                if (res.user) Auth?.setLoggedIn(true);
+                if (history) history.push('/posts')
+              })
+              .catch(e => {
+                setErrors(e.message);
+              });
             })
-            .catch(e => {
-              setErrors(e.message);
-            });
-    //console.log(Auth);
-    //Auth?.setLoggedIn(true);
   };
 
+  /* LOG IN USING GOOGLE ACCOUNT */
   const handleGoogleLogin = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -32,8 +44,7 @@ const Login: React.FC = () => {
                       .signInWithPopup(provider)
                       .then(result => {
                         console.log(result)
-                        //history.push('/reports')
-                        console.log("going to a page that requires auth")
+                        if (history) history.push('/posts')
                         Auth?.setLoggedIn(true)
                       })
                       .catch(e => setErrors(e.message))
