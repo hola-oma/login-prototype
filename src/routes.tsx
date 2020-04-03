@@ -1,6 +1,6 @@
 import React from "react";
 import Login from "./Login";
-import Join from "./Join";
+import Register from "./Register";
 import PostsView from './PostsView';
 import { RouteComponentProps, withRouter, Switch } from "react-router";
 import { Route } from "react-router-dom";
@@ -17,8 +17,8 @@ class Routes extends React.Component<RouteComponentProps & IRoutes, {}> {   // {
     return (
       <div>
         <Switch>
-          <Route exact path="/" component={Join} />
-          <Route exact path="/join" component={Join} />
+          <Route exact path="/" component={Register} />
+          <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <ProtectedRouteHoc exact path="/posts" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostsView} />
         </Switch>
@@ -26,12 +26,6 @@ class Routes extends React.Component<RouteComponentProps & IRoutes, {}> {   // {
     );
   }
 }
-
-/*  Old way 
-const protectedRoutes = [
-  { name: "posts", path: "/posts", exact: true, public: false, main: (props: any) => <PostsView {...props} /> }
-];
-*/
 
 export default withRouter(Routes);
 

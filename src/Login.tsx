@@ -76,7 +76,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
         <br />
         <button type="submit">Log in</button>
         <br />
-        <Link to="/join">Register</Link>
+        <Link to="/register">Register</Link>
 
         <hr />
         <h2>Other sign-in methods</h2>

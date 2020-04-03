@@ -5,12 +5,12 @@ import 'firebase/auth'; // for authentication
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-interface IJoin extends RouteComponentProps<any> {
+interface IRegister extends RouteComponentProps<any> {
   // empty for now 
   // got help here: https://stackoverflow.com/questions/49342390/typescript-how-to-add-type-check-for-history-object-in-react 
 }
 
-const Join: React.FC<IJoin> = ({ history }) => {
+const Register: React.FC<IRegister> = ({ history }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -96,4 +96,4 @@ const Join: React.FC<IJoin> = ({ history }) => {
   );
 };
 
-export default Join;
+export default Register;
