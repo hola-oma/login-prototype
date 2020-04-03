@@ -61,6 +61,8 @@ const Register: React.FC<IRegister> = ({ history }) => {
       <h1>Create an account</h1>
       <p>Enter your email address and a password.</p>
       <form onSubmit={e => handleForm(e)}>
+        {/* todo: pass along a desired username at this step */}
+        {/* https://stackoverflow.com/questions/39607023/in-firebase-how-do-you-update-the-displayname-field-of-a-user-in-auth */}
         <input
           value={email}
           onChange={e => setEmail(e.target.value)}

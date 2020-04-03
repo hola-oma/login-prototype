@@ -2,6 +2,7 @@ import React from "react";
 import Login from "./Login";
 import Register from "./Register";
 import PostsView from './PostsView';
+import SettingsView from './SettingsView';
 import { RouteComponentProps, withRouter, Switch } from "react-router";
 import { Route } from "react-router-dom";
 import ProtectedRouteHoc from "ProtectedRouteHoc";
@@ -17,10 +18,11 @@ class Routes extends React.Component<RouteComponentProps & IRoutes, {}> {   // {
     return (
       <div>
         <Switch>
-          <Route exact path="/" component={Register} />
+          <Route exact path="/" component={Login} /> {/* default route */}
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <ProtectedRouteHoc exact path="/posts" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostsView} />
+          <ProtectedRouteHoc exact path="/settings" isLoggedIn={isLoggedIn} public={false} RouteComponent={SettingsView} />
         </Switch>
       </div>
     );

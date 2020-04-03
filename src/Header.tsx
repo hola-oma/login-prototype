@@ -20,6 +20,7 @@ const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
         <ul className="nav">
           {!isLoggedIn && <li><Link to="/register">Register</Link></li>}
           {!isLoggedIn && <li><Link to="/login">Login</Link></li>}
+          {isLoggedIn && <li><Link to="/settings">Settings</Link></li>}
           {isLoggedIn && <li><Link to="/posts">Posts</Link></li>}
           {isLoggedIn && <li>Sign out</li>}
         </ul>
