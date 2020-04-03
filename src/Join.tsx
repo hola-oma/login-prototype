@@ -19,8 +19,6 @@ const Join: React.FC = () => {
             .catch(e => {
               setErrors(e.message);
             });
-    //console.log(Auth);
-    //Auth?.setLoggedIn(true);
     };
 
   return (

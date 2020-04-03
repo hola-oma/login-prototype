@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
-import routes from "./routes.js";
-import Header from "./Header";
+import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
+import routes from './routes';
+import protectedRoutes from './protectedRoutes';
+import ProtectedRouteHoc from './ProtectedRouteHoc';
+import Header from './Header';
 import './App.css';
 
 import * as firebase from 'firebase/app';
@@ -19,15 +21,33 @@ export const AuthContext = React.createContext<IAuthContext | null>(null);
 function App() {
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
+  /* Look in the browser's stored session to see if user is already logged in.
+  Without this, it "forgets" that you logged in every time you change routes and the app isn't usable. */
+  function readSession() {
+    const user = window.sessionStorage.getItem(`firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
+    );
+    if (user) setLoggedIn(true);
+  }
+
   return (
     /* https://reactjs.org/docs/context.html */
     <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, setLoggedIn }}>
 
     <div className="App">
       <Router>
-        <Header />
-        Is logged in? {JSON.stringify(isLoggedIn)}
+        <Header isLoggedIn={isLoggedIn} />
+
         <Switch>
+          {protectedRoutes.map(route => (
+            <ProtectedRouteHoc
+              key={route.path}
+              isLoggedIn={isLoggedIn}
+              path={route.path}
+              RouteComponent={route.main}
+              exact={route.exact}
+              public={route.public}
+              />
+          ))}
           {routes.map(route => (
             <Route
               key={route.path}
