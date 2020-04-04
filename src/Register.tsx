@@ -15,7 +15,6 @@ interface IRegister extends RouteComponentProps<any> {
 }
 
 const Register: React.FC<IRegister> = ({ history }) => {
-
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -78,24 +77,41 @@ const Register: React.FC<IRegister> = ({ history }) => {
   return (
     <div>
       <h1>Create an account</h1>
-      <p>Enter your email address and a password.</p>
       <form onSubmit={e => handleForm(e)}>
 
-      <input
+      <div>
+        <label>
+          Display name
+        </label>
+
+        <input
           value={displayName}
           onChange={e => setDisplayName(e.target.value)}
           name="displayName"
           type="displayName"
-          placeholder="displayName"
+          placeholder=""
         />
+      </div>
+
+      <div>
+        <label>
+          E-mail address
+        </label>
 
         <input
           value={email}
           onChange={e => setEmail(e.target.value)}
           name="email"
           type="email"
-          placeholder="email"
+          placeholder="me@aol.com"
         />
+      </div>
+
+      <div>
+        <label>
+          Password
+        </label>
+
         <input
           onChange={e => setPassword(e.target.value)}
           name="password"
@@ -103,6 +119,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
           type="password"
           placeholder="password"
         />
+      </div>
 
         <br/>
         <label>
@@ -136,7 +153,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
         <hr />
         <h2>Other sign-up methods</h2>
         {/* Google sign in */}
-        <button onClick={() => handleGoogleJoin()} className="googleBtn" type="button">
+        <button onClick={handleGoogleJoin} className="googleBtn" type="button">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
             alt="logo"

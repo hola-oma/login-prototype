@@ -9,7 +9,6 @@ import './App.css';
 import firebase from 'firebase/app';
 import firebaseConfig from './firebase.config';
 
-
 firebase.initializeApp(firebaseConfig);
 
 interface IAuthContext {
@@ -38,29 +37,8 @@ function App() {
       <Router>
         <Header isLoggedIn={isLoggedIn} />
 
-        <Routes isLoggedIn={isLoggedIn} />
+        <Routes isLoggedIn={isLoggedIn } />
 
-    {/* 
-        <Switch>
-          {protectedRoutes.map(route => (
-            <ProtectedRouteHoc
-              key={route.path}
-              isLoggedIn={isLoggedIn}
-              path={route.path}
-              RouteComponent={route.main}
-              exact={route.exact}
-              public={route.public}
-              />
-          ))}
-          {routes.map(route => (
-            <Route
-              key={route.path}
-              path={route.path}
-              exact={route.exact}
-              component={route.main}
-            />
-          ))}
-          </Switch>  */}
       </Router>
     </div>
     </AuthContext.Provider>
