@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import Header from './Header';
+import Header from './shared/containers/header/Header';
 import Routes from './Routes';
 
 import './App.css';

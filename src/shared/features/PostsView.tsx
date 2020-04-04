@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { roles } from './enums/enums';
+import { roles } from '../../enums/enums';
 
 import { getUserSettings } from "services/user";
 

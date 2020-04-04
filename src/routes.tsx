@@ -1,8 +1,8 @@
 import React from "react";
-import Login from "./Login";
-import Register from "./Register";
-import PostsView from './PostsView';
-import SettingsView from './SettingsView';
+import Login from "./shared/features/Login";
+import Register from "./shared/features/Register";
+import PostsView from './shared/features/PostsView';
+import SettingsView from './shared/features/SettingsView';
 import { RouteComponentProps, withRouter, Switch } from "react-router";
 import { Route } from "react-router-dom";
 import ProtectedRouteHoc from "ProtectedRouteHoc";

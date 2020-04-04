@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import { roles } from './enums/enums';
+import { roles } from '../../enums/enums';
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-import { getUserSettings, updateUserSettings } from './services/user';
+import { getUserSettings, updateUserSettings } from '../../services/user';
 
 interface ISettingsView extends RouteComponentProps<any>{
 }

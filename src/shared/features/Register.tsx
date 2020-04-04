@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "./App";
+import { AuthContext } from "../../App";
 import firebase, { auth } from 'firebase/app';
 import 'firebase/auth'; // for authentication
 import 'firebase/firestore'; // if database type is firestore, import this 
@@ -7,7 +7,7 @@ import 'firebase/database'; // for additional user properties, like role
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-import { roles } from './enums/enums';
+import { roles } from '../../enums/enums';
 
 interface IRegister extends RouteComponentProps<any> {
   // empty for now 
