@@ -18,7 +18,7 @@ class Routes extends React.Component<RouteComponentProps & IRoutes, {}> {   // {
     return (
       <div>
         <Switch>
-          <Route exact path="/" component={Login} /> {/* default route */}
+          <Route exact path="/" component={Register} /> {/* default route */}
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <ProtectedRouteHoc exact path="/posts" isLoggedIn={isLoggedIn} public={false} RouteComponent={PostsView} />

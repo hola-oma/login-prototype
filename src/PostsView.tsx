@@ -1,5 +1,5 @@
 import React from 'react';
-import firebase, { User } from 'firebase/app';
+import { User } from 'firebase/app';
 
 interface IPostsView {
   user: User;

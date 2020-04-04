@@ -1,9 +1,16 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "./App";
-import firebase from 'firebase/app';
+import firebase, { auth } from 'firebase/app';
 import 'firebase/auth'; // for authentication
+import 'firebase/firestore'; // if database type is firestore, import this 
+import 'firebase/database'; // for additional user properties, like role 
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
+
+enum roles {
+  poster = "poster",
+  receiver = "receiver"
+}
 
 interface IRegister extends RouteComponentProps<any> {
   // empty for now 
@@ -16,6 +23,8 @@ const Register: React.FC<IRegister> = ({ history }) => {
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
 
+  const [role, setRole] = useState(roles.receiver); // maybe make this an enum next time 
+
   const Auth = useContext(AuthContext);
 
   /* EMAIL/PASS ACCOUNT CREATION */
@@ -23,19 +32,31 @@ const Register: React.FC<IRegister> = ({ history }) => {
     e.preventDefault();
     firebase.auth()
             .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-            .then(() => {
-              firebase.auth()
-              .createUserWithEmailAndPassword(email, password)
-              .then(res => {
-                console.log(res)
-                if (history) history.push('/posts')
-                if (res.user) Auth?.setLoggedIn(true);
-              })
+            .then( async () => {
+              const user = await auth().createUserWithEmailAndPassword(email, password);
+              
+              if (user) {
+                /*  This was for Realtime Database 
+                var ref = firebase.database().ref('users' + user?.user?.uid);              
+                ref.set({
+                  displayName: 'Grandma',
+                  role: role 
+                */
+                const db = firebase.firestore();
+                db.collection("users").doc(user?.user?.uid).set({
+                  displayName: 'Grandpa',
+                  role: role
+                }).then(() => {
+                  console.log("Set role [" + role + "] for user with ID " + user?.user?.uid);
+                  Auth?.setLoggedIn(true);
+                  if (history) history.push('/posts');
+                });
+              }
+            })
             .catch(e => {
               setErrors(e.message);
             });
-          })
-  };
+          }
 
   /* JOIN USING GOOGLE ACCOUNT */
   const handleGoogleJoin = () => {
@@ -77,8 +98,34 @@ const Register: React.FC<IRegister> = ({ history }) => {
           type="password"
           placeholder="password"
         />
+
+        <br/>
+        <label>
+        <input
+          type="radio"
+          name="accountType"
+          id="receiver"
+          value="receiver"
+          checked={role == roles.receiver}
+          onChange={e => setRole(roles.receiver)}
+          />
+          I want to <b>receive</b> posts
+        </label>
+        <br/>
+        <label>
+          <input
+            type="radio"
+            name="accountType"
+            id="poster"
+            value="poster"
+            onChange={e => setRole(roles.poster)}
+            />
+          I want to <b>make</b> posts
+        </label>
+        <br/>
         
-        <br />
+
+        <br /><br />
         <button type="submit">Sign up</button>
 
         <hr />
