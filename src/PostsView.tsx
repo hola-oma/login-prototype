@@ -13,8 +13,8 @@ const PostsView: React.FC = () => {
     // todo: get user posts
     getUserSettings()
       .then((doc:any) => {
-        setDisplayName(doc.displayName);
-        setRole(doc.role);
+        setDisplayName(doc?.displayName);
+        setRole(doc?.role);
       });
   }, []); // fires on page load if this is empty [] 
 
@@ -25,6 +25,8 @@ const PostsView: React.FC = () => {
     {role === roles.poster && <div>Offer the option to make a post</div>}
     {role === roles.receiver && <div>View the latest post(s) from linked posters</div>}
     <div>If no account is linked, remind the user to link with another user</div>
+
+    <p>Todo: Users who use Google to sign/log in do not yet have a displayName or role set </p>
     </>
   )
 }

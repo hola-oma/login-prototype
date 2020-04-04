@@ -4,7 +4,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth'; // for authentication
 
 import { RouteComponentProps, Link } from 'react-router-dom'; // give us 'history' object 
-import { signUserInWithEmailAndPassword } from "services/user";
+import { signUserInWithEmailAndPassword, signUserInWithGoogle } from "services/user";
 
 interface ILogin extends RouteComponentProps<any> {
   // this was different from the tutorial, got typescript help from: 
@@ -19,7 +19,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
   const Auth = useContext(AuthContext);
 
     /* EMAIL/PASS LOGIN, must exist in database */
-  const handleForm = async (e: any) => {
+  const handleEmailAndPasswordLogin = async (e: any) => {
     e.preventDefault();
 
     try {
@@ -31,22 +31,15 @@ const Login: React.FC<ILogin> = ({ history }) => {
     }
   };
 
-  /* LOG IN USING GOOGLE ACCOUNT */
-  const handleGoogleLogin = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
 
-    firebase.auth()
-            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-            .then(() => {
-              firebase.auth()
-                      .signInWithPopup(provider)
-                      .then(result => {
-                        console.log(result)
-                        if (history) history.push('/posts')
-                        Auth?.setLoggedIn(true)
-                      })
-                      .catch(e => setErrors(e.message))
-                    })
+  const handleGoogleLogin = async () => {
+    try {
+      const loggedInUser = await signUserInWithGoogle();
+      if (loggedInUser?.user) Auth?.setLoggedIn(true);
+      if (history) history.push('/posts');
+    } catch(e) {
+      setErrors(e.message);
+    }
   }
 
   return (
@@ -54,7 +47,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
       <h1>Welcome!</h1>
       <p>Please log in to send a message to your loved one.</p>
 
-      <form onSubmit={e => handleForm(e)}>
+      <form onSubmit={e => handleEmailAndPasswordLogin(e)}>
         <input
           value={email}
           onChange={e => setEmail(e.target.value)}

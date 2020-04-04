@@ -32,20 +32,26 @@ export const signUserInWithEmailAndPassword = async (email: string, password: st
     console.log(e.message);
     throw Error(e.message);
   }
-
-    
-    // .then(() => {
-    //   
-    //     .then(res => {
-    //       return res;
-    //     })
-    //     .catch(e => {
-    //       console.log(e.message);
-    //     });
-    // })
-
 }
 
+export const signUserInWithGoogle = async () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  
+  try {
+    await firebase
+          .auth()
+          .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+
+    const signIn = await firebase
+          .auth()
+          .signInWithPopup(provider)
+
+    return signIn;
+  } catch(e) {
+    console.log(e.message);
+    throw Error(e.message);
+  }
+}
 
 export const signUserOut = async () => {
   firebase.auth().signOut().then(function() {
