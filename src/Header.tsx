@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "./App";
 
 import './Header.css';
-import firebase from "firebase";
 
 import { useHistory } from "react-router-dom";
+import { signUserOut } from "services/user";
 
 interface IHeader {
   isLoggedIn: boolean;
@@ -14,11 +14,10 @@ interface IHeader {
 const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
 
   const Auth = useContext(AuthContext);
-
   let history = useHistory();
 
   const handleSignOut = () => {
-    firebase.auth().signOut().then(function() {
+    signUserOut().then(function() {
       Auth?.setLoggedIn(false);
       history.push('/');
     }).catch(function(error) {
@@ -26,7 +25,6 @@ const Header: React.FC<IHeader> = ({ isLoggedIn }) => {
     });
   }
   
-
   return (
     <div className="headerBar">
       

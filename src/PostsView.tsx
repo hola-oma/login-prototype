@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import firebase, { User } from 'firebase/app';
-import 'firebase/firestore'; // if database type is firestore, import this 
 
 import { roles } from './enums/enums';
 
-interface IPostsView {
-  user: User;
-}
+import { getUserSettings } from "services/user";
 
-const PostsView: React.FC<IPostsView> = ({ user, ...props}) => {
+const PostsView: React.FC = () => {
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    const db = firebase.firestore();
-    db.collection("users").doc(user?.uid).get()
+    // todo: get user posts
+    getUserSettings()
       .then((doc:any) => {
-        setDisplayName(doc.data().displayName);
-        setRole(doc.data().role);
+        setDisplayName(doc.displayName);
+        setRole(doc.role);
       });
   }, []); // fires on page load if this is empty [] 
 

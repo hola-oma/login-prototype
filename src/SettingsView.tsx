@@ -1,50 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import firebase, { User } from 'firebase/app';
-import 'firebase/firestore'; // if database type is firestore, import this 
 
 import { roles } from './enums/enums';
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-
+import { getUserSettings, updateUserSettings } from './services/user';
 
 interface ISettingsView extends RouteComponentProps<any>{
-  user: User;
 }
 
-const SettingsView: React.FC<ISettingsView> = ({ history, user }) => {
+const SettingsView: React.FC<ISettingsView> = ({ history }) => {
 
   //const [username, setUsername] = useState(user ? user.displayName : '');
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
 
-  const [ loading, setLoading ] = useState(true);
-
   /* UPDATE ACCOUNT SETTINGS */
   const handleForm = (e: any) => {
     e.preventDefault();
-
-    const db = firebase.firestore();
-    var user = firebase.auth().currentUser;
-    
-    db.collection("users").doc(user?.uid).set({
-      displayName: displayName,
-      role: role
-    }).then(() => {
-      console.log("Update successful");
-      if (history) history.push('/posts')
-    }).catch(err => {
-      console.log("Error updating user");
-    });
+    updateUserSettings({displayName, role})
+      .then(() => {
+        if (history) history.push('/posts')
+      }).catch(err => {
+        console.log("Error updating user");
+      });
   }
 
   useEffect(() => {
-    const db = firebase.firestore();
-    db.collection("users").doc(user?.uid).get()
+    getUserSettings()
       .then((doc:any) => {
-        setDisplayName(doc.data().displayName);
-        setRole(doc.data().role);
-        console.log(doc.data());
+        setDisplayName(doc.displayName);
+        setRole(doc.role);
       });
   }, []); // fires on page load if this is empty [] 
 

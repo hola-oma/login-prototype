@@ -21,14 +21,6 @@ export const AuthContext = React.createContext<IAuthContext | null>(null);
 function App() {
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
-  /* Look in the browser's stored session to see if user is already logged in.
-  Without this, it "forgets" that you logged in every time you change routes and the app isn't usable. */
-  function readSession() {
-    const user = window.sessionStorage.getItem(`firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
-    );
-    if (user) setLoggedIn(true);
-  }
-
   return (
     /* https://reactjs.org/docs/context.html */
     <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, setLoggedIn }}>
@@ -36,14 +28,11 @@ function App() {
     <div className="App">
       <Router>
         <Header isLoggedIn={isLoggedIn} />
-
         <Routes isLoggedIn={isLoggedIn } />
-
       </Router>
     </div>
     </AuthContext.Provider>
   );
 }
 
-const rootElement = document.getElementById("root");
 export default App;

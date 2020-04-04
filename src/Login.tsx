@@ -4,6 +4,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth'; // for authentication
 
 import { RouteComponentProps, Link } from 'react-router-dom'; // give us 'history' object 
+import { signUserInWithEmailAndPassword } from "services/user";
 
 interface ILogin extends RouteComponentProps<any> {
   // this was different from the tutorial, got typescript help from: 
@@ -18,21 +19,16 @@ const Login: React.FC<ILogin> = ({ history }) => {
   const Auth = useContext(AuthContext);
 
     /* EMAIL/PASS LOGIN, must exist in database */
-  const handleForm = (e: any) => {
+  const handleForm = async (e: any) => {
     e.preventDefault();
-    firebase.auth()
-            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-            .then(() => {
-              firebase.auth()
-              .signInWithEmailAndPassword(email, password)
-              .then(res => {
-                if (res.user) Auth?.setLoggedIn(true);
-                if (history) history.push('/posts')
-              })
-              .catch(e => {
-                setErrors(e.message);
-              });
-            })
+
+    try {
+      const createdUser = await signUserInWithEmailAndPassword(email, password);
+      if (createdUser?.user) Auth?.setLoggedIn(true);
+      if (history) history.push('/posts');
+    } catch(e) {
+      setErrors(e.message);
+    }
   };
 
   /* LOG IN USING GOOGLE ACCOUNT */
