@@ -7,10 +7,7 @@ import 'firebase/database'; // for additional user properties, like role
 
 import { RouteComponentProps } from 'react-router-dom'; // give us 'history' object
 
-enum roles {
-  poster = "poster",
-  receiver = "receiver"
-}
+import { roles } from './enums/enums';
 
 interface IRegister extends RouteComponentProps<any> {
   // empty for now 
@@ -19,6 +16,7 @@ interface IRegister extends RouteComponentProps<any> {
 
 const Register: React.FC<IRegister> = ({ history }) => {
 
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState("");
@@ -31,7 +29,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
   const handleForm = (e: any) => {
     e.preventDefault();
     firebase.auth()
-            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
             .then( async () => {
               const user = await auth().createUserWithEmailAndPassword(email, password);
               
@@ -44,7 +42,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
                 */
                 const db = firebase.firestore();
                 db.collection("users").doc(user?.user?.uid).set({
-                  displayName: 'Grandpa',
+                  displayName: displayName,
                   role: role
                 }).then(() => {
                   console.log("Set role [" + role + "] for user with ID " + user?.user?.uid);
@@ -63,7 +61,7 @@ const Register: React.FC<IRegister> = ({ history }) => {
     const provider = new firebase.auth.GoogleAuthProvider();
 
     firebase.auth()
-            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
             .then(() => {
               firebase
               .auth()
@@ -82,8 +80,15 @@ const Register: React.FC<IRegister> = ({ history }) => {
       <h1>Create an account</h1>
       <p>Enter your email address and a password.</p>
       <form onSubmit={e => handleForm(e)}>
-        {/* todo: pass along a desired username at this step */}
-        {/* https://stackoverflow.com/questions/39607023/in-firebase-how-do-you-update-the-displayname-field-of-a-user-in-auth */}
+
+      <input
+          value={displayName}
+          onChange={e => setDisplayName(e.target.value)}
+          name="displayName"
+          type="displayName"
+          placeholder="displayName"
+        />
+
         <input
           value={email}
           onChange={e => setEmail(e.target.value)}

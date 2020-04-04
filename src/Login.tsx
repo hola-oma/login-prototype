@@ -21,7 +21,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
   const handleForm = (e: any) => {
     e.preventDefault();
     firebase.auth()
-            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
             .then(() => {
               firebase.auth()
               .signInWithEmailAndPassword(email, password)
@@ -40,7 +40,7 @@ const Login: React.FC<ILogin> = ({ history }) => {
     const provider = new firebase.auth.GoogleAuthProvider();
 
     firebase.auth()
-            .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
             .then(() => {
               firebase.auth()
                       .signInWithPopup(provider)
