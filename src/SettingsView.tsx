@@ -27,18 +27,6 @@ const SettingsView: React.FC<ISettingsView> = ({ user }) => {
     });
   }
 
-  /* GET EXISTING ACCOUNT SETTINGS */
-      // get this user's record from the user's collection in the firestore database
-    const db = firebase.firestore();
-    db.collection("users").doc(user?.user?.uid).get({
-      displayName: 'Grandpa',
-      role: role
-    }).then(() => {
-      console.log("Set role [" + role + "] for user with ID " + user?.user?.uid);
-      Auth?.setLoggedIn(true);
-      if (history) history.push('/posts');
-    });
-
   return (
     <div>
       <h2>Account Settings</h2>
